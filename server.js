@@ -1,11 +1,18 @@
-var express = require('express'),
-app = express(),
-server = app.listen(8077, function () {
-  var host = server.address().address
-  var port = server.address().port
-  console.log('Server is Here!');
-}),
-io = require('socket.io').listen(server);
-app.get('/', function (req, res) {
-  res.send('hello,pidor!');
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+app.use(express.static('static'));
+
+app.get('/', function(req, res){
+  res.sendfile('index.html');
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
 });
